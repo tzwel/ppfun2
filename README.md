@@ -1,1 +1,2 @@
-removed pyaudio from dependencies
+- replaced pyaudio with native windows notifications
+- removed unecessary code
