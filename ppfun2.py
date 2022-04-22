@@ -15,6 +15,11 @@ BOT_URL    = 'https://raw.githubusercontent.com/tzwel/ppfun2/master/ppfun2.py'
 VERDEF_URL = 'https://raw.githubusercontent.com/tzwel/ppfun2/master/verdef'
 
 try:
+    from win10toast import ToastNotifier
+except ImportError:
+    not_inst_libs.append('win10toast')
+
+try:
     import requests
 except ImportError:
     not_inst_libs.append('requests')
@@ -63,6 +68,11 @@ chunk_data = None
 # number of pixels drawn and the starting time
 pixels_drawn = 1
 start_time = None
+
+# toaster init
+toaster = ToastNotifier()
+
+
 
 # configuration
 class PpfunConfigAuth(object):
@@ -321,6 +331,7 @@ def main():
     # initialize colorama
     init()
 
+
     # get the version on the server
     print(f'{Fore.YELLOW}PixelPlanet bot by portasynthinca3 (forked by tzwel) version {Fore.GREEN}{VERSION}{Fore.YELLOW}' +
         f' released on {Fore.GREEN}{VERSION_DATE}{Fore.YELLOW}' + 
@@ -547,6 +558,8 @@ def main():
                     # CAPTCHA error
                     if rc == 10:
                         draw = False
+                        toaster.show_toast("Pixel Planet notification", "Captcha error: Place a pixel somewhere manually and enter CAPTCHA", threaded=True,
+                   icon_path=None, duration=5)
                         print(Fore.RED + 'Place a pixel somewhere manually and enter CAPTCHA' + Style.RESET_ALL)
                     # any error
                     if rc != 0:
