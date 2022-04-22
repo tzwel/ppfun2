@@ -101,8 +101,6 @@ class PpfunConfig(object):
 
 config = None
 
-# play a notification sound
-
 # shows the image in a window
 def show_image(img):
     print(f'{Fore.YELLOW}Scroll to zoom, drag to pan, press any key to close the window{Style.RESET_ALL}')
