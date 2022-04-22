@@ -52,10 +52,10 @@ if len(not_inst_libs) > 0:
 me, thr, ws = {}, None, None
 
 # the version of the bot
-VERSION          = '1.1.16'
-VERSION_NUM      = 17
-VERSION_DATE     = 'Oct. 22, 2021'
-VERSION_FEATURES = '  - proper status indication (thanks to Rem-u)'
+VERSION          = '1.1.17'
+VERSION_NUM      = 18
+VERSION_DATE     = 'Apr. 22, 2022'
+VERSION_FEATURES = ' - replaced pyaudio with native windows notifications, removed unecessary code'
 
 # are we allowed to draw
 draw = True
