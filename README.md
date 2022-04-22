@@ -4,7 +4,7 @@ This fork is Windows-focused
 
 ## Some changes
 - replaced pyaudio with native windows notifications
-- removed unecessary code
+- removed unnecessary code
 
 ## Installation
 ```
