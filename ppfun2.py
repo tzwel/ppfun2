@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# PixelPlanet bot version 2 by portasynthinca3 (now using WebSocket!)
+# PixelPlanet bot version 2 by portasynthinca3 (forked by tzwel)
 # Distributed under WTFPL
 
 not_inst_libs = []
@@ -11,20 +11,13 @@ import time, datetime, math, random
 import os.path as path, getpass
 
 # URLs of various files
-BOT_URL    = 'https://raw.githubusercontent.com/portasynthinca3/ppfun2/master/ppfun2.py'
-VERDEF_URL = 'https://raw.githubusercontent.com/portasynthinca3/ppfun2/master/verdef'
-SOUND_URL  = 'https://raw.githubusercontent.com/portasynthinca3/ppfun2/master/notif.wav'
+BOT_URL    = 'https://raw.githubusercontent.com/tzwel/ppfun2/master/ppfun2.py'
+VERDEF_URL = 'https://raw.githubusercontent.com/tzwel/ppfun2/master/verdef'
 
 try:
     import requests
 except ImportError:
     not_inst_libs.append('requests')
-
-try:
-    import pyaudio
-    import wave
-except ImportError:
-    not_inst_libs.append('PyAudio')
 
 try:
     import numpy as np
@@ -50,20 +43,6 @@ except ImportError:
 if len(not_inst_libs) > 0:
     print('Some libraries are not installed. Install them by running this command:\npip install ' + ' '.join(not_inst_libs))
     exit()
-
-def download_file(url):
-    local_filename = url.split('/')[-1]
-    r = requests.get(url, stream=True)
-    with open(local_filename, 'wb') as f:
-        for chunk in r.iter_content(chunk_size=1024): 
-            if chunk:
-                f.write(chunk)
-    return local_filename
-
-# check the presence of the sound notification file
-if not path.exists('notif.wav'):
-    print('notif.wav is not present, downloading...')
-    download_file(SOUND_URL)
 
 me, thr, ws = {}, None, None
 
@@ -113,21 +92,6 @@ class PpfunConfig(object):
 config = None
 
 # play a notification sound
-def play_notification():
-    wf = wave.open('notif.wav', 'rb')
-    pa = pyaudio.PyAudio()
-    stream = pa.open(format=pa.get_format_from_width(wf.getsampwidth()),
-                     channels=wf.getnchannels(),
-                     rate=wf.getframerate(),
-                     output=True)
-    data = wf.readframes(128)
-    while len(data) > 0:
-        stream.write(data)
-        data = wf.readframes(128)
-
-    stream.stop_stream()
-    stream.close()
-    pa.terminate()
 
 # shows the image in a window
 def show_image(img):
@@ -358,7 +322,7 @@ def main():
     init()
 
     # get the version on the server
-    print(f'{Fore.YELLOW}PixelPlanet bot by portasynthinca3 version {Fore.GREEN}{VERSION}{Fore.YELLOW}' +
+    print(f'{Fore.YELLOW}PixelPlanet bot by portasynthinca3 (forked by tzwel) version {Fore.GREEN}{VERSION}{Fore.YELLOW}' +
         f' released on {Fore.GREEN}{VERSION_DATE}{Fore.YELLOW}' + 
         f'\nNew features in this version: \n{Fore.GREEN}{VERSION_FEATURES}{Fore.YELLOW}'
         f'\nChecking for updates{Style.RESET_ALL}')
@@ -583,7 +547,6 @@ def main():
                     # CAPTCHA error
                     if rc == 10:
                         draw = False
-                        play_notification()
                         print(Fore.RED + 'Place a pixel somewhere manually and enter CAPTCHA' + Style.RESET_ALL)
                     # any error
                     if rc != 0:
